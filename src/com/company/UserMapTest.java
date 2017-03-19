@@ -3,6 +3,7 @@ package com.company;
 import org.junit.Assert;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.Spy;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -29,11 +30,15 @@ public class UserMapTest {
 
         }
 
-    @org.junit.Test
+    @org.junit.Test(expected = Exception.class)
     public void readInUsers() throws Exception {
-        //Check if the user Mapping is done correctly
+        //Check what happens when file specified is not found
         uMap=mock(UserMap.class);//mocking the UserMap class
-        Mockito.doThrow(new FileNotFoundException()).when(uMap).readInUsers("wrong.txt");
+        doThrow(new FileNotFoundException()).when(uMap).readInUsers("wrong.txt");
+
+        //Check if readUser method calls populateMap
+        UserMap spy= spy(new UserMap());
+        doReturn(1).when(spy).populateMap();
 
     }
 
@@ -62,7 +67,6 @@ public class UserMapTest {
         boolean isCorrect=uMap.checkTweetSentenceStructure(sentenceOne);
         Assert.assertEquals(sentenceOne,false,isCorrect);
 
-
         String sentenceTwo=" Alan -- This message does not have the correct seperator";
         isCorrect=uMap.checkTweetSentenceStructure(sentenceTwo);
         Assert.assertEquals(sentenceTwo,false,isCorrect);
@@ -72,8 +76,16 @@ public class UserMapTest {
         Assert.assertEquals(sentenceThree,true,isCorrect);
     }
 
-    @org.junit.Test
+    @org.junit.Test(expected = Exception.class)
     public void displayMapData() throws Exception {
+
+        //Check File not found exception case
+        uMap=mock(UserMap.class);//mocking the UserMap class
+        doThrow(new FileNotFoundException()).when(uMap).attachTweet(anyString(),anySet(),"wrong.txt");
+
+        //Check if user data calls attachTweet method
+        UserMap spy= spy(new UserMap());
+        doReturn(1).when(spy).attachTweet(anyString(),anySet(),anyString());
 
     }
 

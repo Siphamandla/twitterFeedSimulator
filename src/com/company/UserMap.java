@@ -70,7 +70,6 @@ public class UserMap {
             //Check for follower
             if(follower.length()>0)
             {
-
                 correctStructure=true;
             }
             else
@@ -84,10 +83,10 @@ public class UserMap {
         return correctStructure;
     }
 
-    private void populateMap()
+    protected void populateMap()
     {
         String [] peopleFollowing=followersList[1].split(",");
-        Set<String>followerSet=null;
+        Set<String>followerSet;
 
         if(TwitterMap.containsKey(followersList[0].trim()))
         {
@@ -155,7 +154,7 @@ public class UserMap {
         }
     }
 
-    private void attachTweet(String sender,Set bucket,String fileName)
+    protected void attachTweet(String sender,Set bucket,String fileName)
     {
         try {
             FileInputStream stream=new FileInputStream(fileName);
